@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manideepika Groceries Admin Portal</title>
+  <link rel="stylesheet" href="../ap2/css/style.css" />
+  <link rel="icon" href="../ap2/icon.png" />
+  <style>
+    body { background: var(--gray-light); }
+    .admin-login-wrap {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+    }
+    .admin-login-box {
+      background: white; border-radius: var(--radius); padding: 2.5rem;
+      width: 100%; max-width: 400px; box-shadow: var(--shadow-lg);
+    }
+    .admin-login-box .logo { text-align:center; margin-bottom:2rem; }
+    .admin-login-box .logo span { color: var(--gold); }
+    .admin-section { display: none; }
+    .admin-section.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- ══ ADMIN LOGIN ══ -->
+<div id="adminLoginSection" class="admin-login-wrap">
+  <div class="admin-login-box">
+    <div class="logo">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--green-dark);">
+         <img src="../ap2/icon.png" alt="Manideepika Groceries" style="height:100px;width:auto;object-fit:contain;">
+      </h2>
+      <p style="color:var(--gray-dark);font-size:0.9rem;margin-top:0.5rem;">Admin Portal</p>
+    </div>
+    <form onsubmit="adminLogin(event)">
+      <div class="form-group">
+        <label>Admin Email</label>
+        <input type="email" id="adminEmail" placeholder="admin@manideepika.com" required value="admin@manideepika.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="adminPass" placeholder="••••••••" required value="Admin@123" />
+        <p class="form-hint">Default: admin@manideepika.com / Admin@123</p>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block btn-lg">Login to Admin Panel</button>
+    </form>
+    <p style="text-align:center;margin-top:1.25rem;font-size:0.85rem;">
+      <a href="../ap2/index.html" style="color:var(--green-mid);font-weight:600;">← Back to Store</a>
+    </p>
+  </div>
+</div>
+
+<!-- ══ ADMIN DASHBOARD ══ -->
+<div id="adminDashboard" style="display:none;" class="admin-layout">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <img src="../ap2/icon.png" alt="Manideepika Groceries" style="height:44px;width:auto;object-fit:contain;">
+      <p style="color:rgba(255,255,255,0.5);font-size:0.78rem;margin-top:0.4rem;">Admin Portal</p>
+    </div>
+    <ul class="admin-nav">
+      <li><a href="#" data-sec="overview" class="active" onclick="showAdminSection('overview')">📊 Overview</a></li>
+      <li><a href="#" data-sec="products" onclick="showAdminSection('products')">📦 Products</a></li>
+      <li><a href="#" data-sec="orders" onclick="showAdminSection('orders')">🧾 Orders</a></li>
+      <li><a href="#" data-sec="users" onclick="showAdminSection('users')">👥 Customers</a></li>
+      <li><a href="#" data-sec="categories" onclick="showAdminSection('categories')">🗂 Categories</a></li>
+    </ul>
+    <div style="padding:1.5rem;border-top:1px solid rgba(255,255,255,0.1);margin-top:auto;">
+      <a href="../ap2/index.html" style="display:block;color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:0.75rem;">🏪 View Store</a>
+      <button onclick="adminLogout()" class="btn btn-danger btn-sm btn-block">Log Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 id="adminPageTitle">Dashboard Overview</h1>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span style="font-size:0.85rem;color:var(--gray-dark);">Admin</span>
+        <div style="width:36px;height:36px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;">👤</div>
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- ── OVERVIEW ── -->
+      <div class="admin-section active" id="admin-overview">
+        <div class="admin-stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Products</div>
+            <div class="stat-value" id="statProducts">0</div>
+            <div class="stat-change">📦 Active listings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Orders</div>
+            <div class="stat-value" id="statOrders">0</div>
+            <div class="stat-change">🧾 All time</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Revenue</div>
+            <div class="stat-value" id="statRevenue">£0</div>
+            <div class="stat-change">💰 Gross total</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Customers</div>
+            <div class="stat-value" id="statUsers">0</div>
+            <div class="stat-change">👥 Registered</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+          <div class="data-table">
+            <div class="table-header">
+              <h3>📊 Quick Actions</h3>
+            </div>
+            <div style="padding:1.5rem;display:flex;flex-direction:column;gap:0.75rem;">
+              <button class="btn btn-primary" onclick="showAdminSection('products');openModal('addProductModal')">+ Add New Product</button>
+              <button class="btn btn-outline" onclick="showAdminSection('orders')">📦 View All Orders</button>
+              <button class="btn btn-outline" onclick="showAdminSection('users')">👥 View Customers</button>
+              <a href="../ap2/index.html" target="_blank" class="btn btn-outline" style="text-align:center;">🏪 Open Store</a>
+            </div>
+          </div>
+          <div class="data-table">
+            <div class="table-header"><h3>📋 Store Summary</h3></div>
+            <div style="padding:1.5rem;">
+              <div style="display:flex;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid var(--gray-light);font-size:0.9rem;">
+                <span>Drink Products</span><span id="catDrinks" style="font-weight:700;">–</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid var(--gray-light);font-size:0.9rem;">
+                <span>Dairy Products</span><span id="catDairy" style="font-weight:700;">–</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid var(--gray-light);font-size:0.9rem;">
+                <span>Meat & Fish</span><span id="catMeat" style="font-weight:700;">–</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:0.6rem 0;font-size:0.9rem;">
+                <span>Sale Items</span><span id="catSale" style="font-weight:700;color:var(--red);">–</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PRODUCTS ── -->
+      <div class="admin-section" id="admin-products">
+        <div class="data-table">
+          <div class="table-header">
+            <h3>📦 All Products</h3>
+            <div style="display:flex;gap:0.75rem;align-items:center;">
+              <input type="text" placeholder="Search products..." style="width:200px;padding:0.45rem 0.75rem;font-size:0.85rem;" oninput="filterAdminProducts(this.value)" />
+              <button class="btn btn-primary btn-sm" onclick="openModal('addProductModal')">+ Add Product</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Retail Price</th>
+                  <th>Wholesale</th>
+                  <th>Weight</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminProductsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ORDERS ── -->
+      <div class="admin-section" id="admin-orders">
+        <div class="data-table">
+          <div class="table-header">
+            <h3>🧾 All Orders</h3>
+            <button class="btn btn-outline btn-sm" onclick="renderAdminOrders()">Refresh</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Update</th>
+                </tr>
+              </thead>
+              <tbody id="adminOrdersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── USERS ── -->
+      <div class="admin-section" id="admin-users">
+        <div class="data-table">
+          <div class="table-header">
+            <h3>👥 Registered Customers</h3>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Account Type</th>
+                  <th>ID</th>
+                </tr>
+              </thead>
+              <tbody id="adminUsersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CATEGORIES ── -->
+      <div class="admin-section" id="admin-categories">
+        <div class="data-table">
+          <div class="table-header">
+            <h3>🗂 Product Categories</h3>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Emoji</th>
+                  <th>Products Count</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminCategoriesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </main>
+</div>
+
+<!-- ══ MODALS ══ -->
+
+<!-- Add Product Modal -->
+<div class="modal-overlay" id="addProductModal" onclick="if(event.target===this)closeModal('addProductModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>➕ Add New Product</h2>
+      <button class="cart-close" onclick="closeModal('addProductModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="addNewProduct(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" id="newName" placeholder="e.g. Fresh Orange Juice" required />
+          </div>
+          <div class="form-group">
+            <label>Emoji</label>
+            <input type="text" id="newEmoji" placeholder="🥤" maxlength="4" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="newCategory" required>
+            <option value="">Select category</option>
+            <option value="drinks">🥤 Drinks</option>
+            <option value="dairy">🥛 Dairy</option>
+            <option value="fruits">🍎 Fruits</option>
+            <option value="vegetables">🥦 Vegetables</option>
+            <option value="bakery">🍞 Bakery</option>
+            <option value="meat">🥩 Meat & Fish</option>
+            <option value="snacks">🍫 Snacks</option>
+            <option value="frozen">❄️ Frozen</option>
+            <option value="condiments">🫙 Condiments</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Retail Price (£)</label>
+            <input type="number" id="newPrice" step="0.01" min="0" placeholder="2.49" required />
+          </div>
+          <div class="form-group">
+            <label>Wholesale Price (£)</label>
+            <input type="number" id="newWholesale" step="0.01" min="0" placeholder="1.89" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Weight / Size</label>
+          <input type="text" id="newWeight" placeholder="e.g. 1L, 500g, 4 pack" required />
+        </div>
+        <div class="modal-footer" style="border:none;padding:0;margin-top:1rem;">
+          <button type="button" class="btn btn-outline" onclick="closeModal('addProductModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Product Modal -->
+<div class="modal-overlay" id="editProductModal" onclick="if(event.target===this)closeModal('editProductModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>✏️ Edit Product</h2>
+      <button class="cart-close" onclick="closeModal('editProductModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="saveEditProduct(event)">
+        <input type="hidden" id="editProductId" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" id="editName" required />
+          </div>
+          <div class="form-group">
+            <label>Emoji</label>
+            <input type="text" id="editEmoji" maxlength="4" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="editCategory">
+            <option value="drinks">🥤 Drinks</option>
+            <option value="dairy">🥛 Dairy</option>
+            <option value="fruits">🍎 Fruits</option>
+            <option value="vegetables">🥦 Vegetables</option>
+            <option value="bakery">🍞 Bakery</option>
+            <option value="meat">🥩 Meat & Fish</option>
+            <option value="snacks">🍫 Snacks</option>
+            <option value="frozen">❄️ Frozen</option>
+            <option value="condiments">🫙 Condiments</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Retail Price (£)</label>
+            <input type="number" id="editPrice" step="0.01" min="0" required />
+          </div>
+          <div class="form-group">
+            <label>Wholesale Price (£)</label>
+            <input type="number" id="editWholesale" step="0.01" min="0" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Weight / Size</label>
+          <input type="text" id="editWeight" required />
+        </div>
+        <div class="modal-footer" style="border:none;padding:0;margin-top:1rem;">
+          <button type="button" class="btn btn-outline" onclick="closeModal('editProductModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="../ap2/script/app.js"></script>
+<script>
+// Admin-specific extras
+function showAdminSection(sec) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.getElementById(`admin-${sec}`).classList.add('active');
+  document.querySelectorAll('.admin-nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.sec === sec);
+  });
+  const titles = { overview:'Dashboard Overview', products:'Products', orders:'Orders', users:'Customers', categories:'Categories' };
+  document.getElementById('adminPageTitle').textContent = titles[sec] || sec;
+  if (sec === 'users') renderAdminUsers();
+  if (sec === 'categories') renderAdminCategories();
+}
+
+function renderAdminUsers() {
+  const tbody = document.getElementById('adminUsersBody');
+  tbody.innerHTML = users.length
+    ? users.map(u => `
+      <tr>
+        <td>${u.firstName} ${u.lastName}</td>
+        <td>${u.email}</td>
+        <td><span class="badge ${u.type==='wholesale'?'badge-gold':'badge-green'}">${u.type}</span></td>
+        <td style="font-size:0.78rem;color:var(--gray-dark);">#${u.id}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="4" style="text-align:center;color:var(--gray-dark);padding:2rem;">No registered users yet</td></tr>`;
+}
+
+function renderAdminCategories() {
+  const cats = [
+    {id:'drinks',emoji:'🥤',label:'Drinks'},
+    {id:'dairy',emoji:'🥛',label:'Dairy'},
+    {id:'fruits',emoji:'🍎',label:'Fruits'},
+    {id:'vegetables',emoji:'🥦',label:'Vegetables'},
+    {id:'bakery',emoji:'🍞',label:'Bakery'},
+    {id:'meat',emoji:'🥩',label:'Meat & Fish'},
+    {id:'snacks',emoji:'🍫',label:'Snacks'},
+    {id:'frozen',emoji:'❄️',label:'Frozen'},
+    {id:'condiments',emoji:'🫙',label:'Condiments'},
+  ];
+  const tbody = document.getElementById('adminCategoriesBody');
+  tbody.innerHTML = cats.map(c => {
+    const count = products.filter(p => p.category === c.id).length;
+    return `
+      <tr>
+        <td>${c.label}</td>
+        <td style="font-size:1.5rem;">${c.emoji}</td>
+        <td><span class="badge badge-green">${count} products</span></td>
+        <td><span style="font-size:0.8rem;color:var(--gray-dark);">Built-in</span></td>
+      </tr>`;
+  }).join('');
+}
+
+function filterAdminProducts(query) {
+  const rows = document.querySelectorAll('#adminProductsBody tr');
+  rows.forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(query.toLowerCase()) ? '' : 'none';
+  });
+}
+
+function updateAdminStats() {
+  document.getElementById('statProducts').textContent = products.length;
+  document.getElementById('statOrders').textContent = orders.length;
+  document.getElementById('statRevenue').textContent = `£${orders.reduce((s,o) => s + o.total, 0).toFixed(0)}`;
+  document.getElementById('statUsers').textContent = users.length;
+  if (document.getElementById('catDrinks')) {
+    document.getElementById('catDrinks').textContent = products.filter(p=>p.category==='drinks').length;
+    document.getElementById('catDairy').textContent = products.filter(p=>p.category==='dairy').length;
+    document.getElementById('catMeat').textContent = products.filter(p=>p.category==='meat').length;
+    document.getElementById('catSale').textContent = products.filter(p=>p.badge==='sale').length;
+  }
+}
+
+// Override the renderAdminProducts to match admin page paths
+const _origRenderAdminProducts = renderAdminProducts;
+
+// Init
+if (adminLoggedIn) {
+  document.getElementById('adminLoginSection').style.display = 'none';
+  document.getElementById('adminDashboard').style.display = 'flex';
+  renderAdminProducts();
+  renderAdminOrders();
+  updateAdminStats();
+}
+</script>
+</body>
+</html>

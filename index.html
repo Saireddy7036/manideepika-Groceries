@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manideepika Groceries – Retail & Wholesale Groceries</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="icon.png" />
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <a class="navbar-brand" onclick="navigate('homePage')" style="cursor:pointer">
+    <img src="icon.png" alt="Manideepika Groceries" style="height:48px;width:auto;object-fit:contain;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" data-page="homePage" onclick="navigate('homePage')" class="active">Home</a></li>
+    <li><a href="#" data-page="productsPage" onclick="navigate('productsPage')">Products</a></li>
+    <li><a href="#" data-page="servicesPage" onclick="navigate('servicesPage')">Services</a></li>
+    <li><a href="#" data-page="aboutPage" onclick="navigate('aboutPage')">About Us</a></li>
+    <li><a href="#" data-page="contactPage" onclick="navigate('contactPage')">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-nav" id="loginBtn" onclick="openModal('loginModal')">Log In</button>
+    <button class="btn-nav btn-nav-primary" id="signupBtn" onclick="openModal('signupModal')">Sign Up</button>
+    <div id="userMenu" style="display:none;align-items:center;gap:0.6rem;">
+      <span id="userGreeting" style="color:rgba(255,255,255,0.8);font-size:0.88rem;"></span>
+      <button class="btn-nav" onclick="logout()">Log Out</button>
+    </div>
+    <button class="cart-btn" onclick="openCart()" title="Cart">
+      🛒 <span class="cart-count" style="display:none">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══ PAGES ══ -->
+
+<!-- HOME PAGE -->
+<div class="page active" id="homePage">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-content">
+      <div>
+        <div class="hero-badge">🌿 Fresh Groceries, Happy Families</div>
+        <h1>Your One-Stop <em>Grocery</em> Destination</h1>
+        <p>Quality produce for retail shoppers and wholesale buyers alike. From farm-fresh dairy to everyday essentials — delivered to your door.</p>
+        <div class="hero-actions">
+          <button class="btn btn-gold btn-lg" onclick="navigate('productsPage')">🛒 Shop Now</button>
+          <button class="btn btn-outline btn-lg" style="color:white;border-color:rgba(255,255,255,0.4);" onclick="navigate('servicesPage')">Our Services</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="icon">🥛</div>
+          <h3>Dairy Products</h3>
+          <p>Fresh milk, cheese, yogurt & butter from local farms</p>
+        </div>
+        <div class="hero-card">
+          <div class="icon">🥤</div>
+          <h3>Drinks & Juices</h3>
+          <p>Wide range of beverages for every taste</p>
+        </div>
+        <div class="hero-card">
+          <div class="icon">🥩</div>
+          <h3>Meat & Fish</h3>
+          <p>Premium cuts and fresh catches daily</p>
+        </div>
+        <div class="hero-card">
+          <div class="icon">🏪</div>
+          <h3>Wholesale Prices</h3>
+          <p>Special bulk pricing for registered wholesale buyers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-item"><h3>500+</h3><p>Products Available</p></div>
+    <div class="stat-item"><h3>10K+</h3><p>Happy Customers</p></div>
+    <div class="stat-item"><h3>£30+</h3><p>Free Delivery</p></div>
+    <div class="stat-item"><h3>24/7</h3><p>Online Ordering</p></div>
+  </div>
+
+  <!-- Categories -->
+  <section class="section" style="background:var(--off-white);">
+    <div class="container">
+      <div class="section-header">
+        <span class="label">Browse By Category</span>
+        <h2>What Are You Looking For?</h2>
+        <p>Explore our wide range of fresh products organised by category</p>
+      </div>
+      <div class="categories-grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">
+        <div class="category-card" onclick="navigate('productsPage');setCategory('drinks')">
+          <div class="cat-icon">🥤</div><h3>Drinks</h3>
+        </div>
+        <div class="category-card" onclick="navigate('productsPage');setCategory('dairy')">
+          <div class="cat-icon">🥛</div><h3>Dairy</h3>
+        </div>
+        <div class="category-card" onclick="navigate('productsPage');setCategory('fruits')">
+          <div class="cat-icon">🍎</div><h3>Fruits</h3>
+        </div>
+        <div class="category-card" onclick="navigate('productsPage');setCategory('vegetables')">
+          <div class="cat-icon">🥦</div><h3>Vegetables</h3>
+        </div>
+        <div class="category-card" onclick="navigate('productsPage');setCategory('bakery')">
+          <div class="cat-icon">🍞</div><h3>Bakery</h3>
+        </div>
+        <div class="category-card" onclick="navigate('productsPage');setCategory('meat')">
+          <div class="cat-icon">🥩</div><h3>Meat & Fish</h3>
+        </div>
+        <div class="category-card" onclick="navigate('productsPage');setCategory('snacks')">
+          <div class="cat-icon">🍫</div><h3>Snacks</h3>
+        </div>
+        <div class="category-card" onclick="navigate('productsPage');setCategory('frozen')">
+          <div class="cat-icon">❄️</div><h3>Frozen</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="label">On Offer</span>
+        <h2>Featured Products</h2>
+        <p>Hand-picked deals and seasonal favourites</p>
+      </div>
+      <div class="products-grid" id="featuredProducts"></div>
+      <div style="text-align:center;margin-top:2.5rem;">
+        <button class="btn btn-primary btn-lg" onclick="navigate('productsPage')">View All Products →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="section" style="background:var(--green-pale);">
+    <div class="container">
+      <div class="section-header">
+        <span class="label">Why Manideepika Groceries</span>
+        <h2>More Than Just a Grocery Store</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🚚</div>
+          <h3>Fast Delivery</h3>
+          <p>Same-day delivery available for orders placed before 2pm. Free delivery on orders over £30.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💰</div>
+          <h3>Wholesale Pricing</h3>
+          <p>Registered wholesale buyers get exclusive bulk pricing on all products. Apply online today.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🌿</div>
+          <h3>Fresh & Quality</h3>
+          <p>All products sourced from trusted suppliers. Freshness guaranteed or your money back.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🔒</div>
+          <h3>Secure Payments</h3>
+          <p>Powered by Stripe. Pay securely with Visa, Mastercard, Amex or PayPal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><img src="icon.png" alt="Manideepika Groceries" style="height:42px;width:auto;object-fit:contain;"> 🌿</div>
+          <p>Your trusted retail and wholesale grocery store. Quality products, fair prices, delivered to your door.</p>
+          <div class="social-links">
+            <div class="social-link">f</div>
+            <div class="social-link">t</div>
+            <div class="social-link">in</div>
+            <div class="social-link">ig</div>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#" onclick="navigate('homePage')">Home</a></li>
+            <li><a href="#" onclick="navigate('productsPage')">Products</a></li>
+            <li><a href="#" onclick="navigate('servicesPage')">Services</a></li>
+            <li><a href="#" onclick="navigate('aboutPage')">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Categories</h4>
+          <ul>
+            <li><a href="#" onclick="navigate('productsPage');setCategory('drinks')">Drinks</a></li>
+            <li><a href="#" onclick="navigate('productsPage');setCategory('dairy')">Dairy</a></li>
+            <li><a href="#" onclick="navigate('productsPage');setCategory('meat')">Meat & Fish</a></li>
+            <li><a href="#" onclick="navigate('productsPage');setCategory('bakery')">Bakery</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="#">📍 123 Market Street, London</a></li>
+            <li><a href="#">📞 +44 20 1234 5678</a></li>
+            <li><a href="#">✉️ hello@manideepika.co.uk</a></li>
+            <li><a href="#" onclick="navigate('contactPage')">Contact Form</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Manideepika Groceries. All rights reserved.</p>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.5);">Powered by Stripe · Visa · Mastercard · PayPal</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- PRODUCTS PAGE -->
+<div class="page" id="productsPage">
+  <div class="page-hero" style="padding:3rem 2rem 2.5rem;">
+    <h1>Our Products</h1>
+    <p>Browse hundreds of quality retail and wholesale grocery items</p>
+  </div>
+  <section class="section" style="padding-top:2rem;">
+    <div class="container">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+        <div class="search-bar">
+          <input type="text" id="productSearch" placeholder="Search products...">
+          <button>🔍</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.88rem;font-weight:600;color:var(--green-dark);">
+            <input type="checkbox" id="priceToggle" style="width:auto;accent-color:var(--green-mid);">
+            Wholesale Prices
+          </label>
+          <select id="sortProducts" class="filter-select">
+            <option value="">Sort by Default</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+      <div class="categories-grid" id="categoriesGrid" style="margin-bottom:2rem;"></div>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </section>
+  <!-- Footer repeat -->
+  <footer style="background:var(--green-dark);padding:2rem;text-align:center;color:rgba(255,255,255,0.6);font-size:0.85rem;">
+    © 2025 Manideepika Groceries · <a href="#" onclick="navigate('contactPage')" style="color:var(--gold);">Contact Us</a>
+  </footer>
+</div>
+
+<!-- SERVICES PAGE -->
+<div class="page" id="servicesPage">
+  <div class="page-hero">
+    <h1>Our Services</h1>
+    <p>We offer a complete grocery solution for individuals, families, and businesses</p>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="label">What We Offer</span>
+        <h2>Services Tailored to Your Needs</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🏪</div>
+          <h3>Retail Shopping</h3>
+          <p>Shop at standard retail prices with full access to our product catalogue. Perfect for individuals and families looking for quality groceries.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">📦</div>
+          <h3>Wholesale Buying</h3>
+          <p>Registered wholesale accounts enjoy significantly reduced bulk pricing. Ideal for restaurants, cafes, offices and small businesses.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🚚</div>
+          <h3>Home Delivery</h3>
+          <p>Same-day and next-day delivery slots available. Free delivery on orders over £30. Tracked and insured delivery every time.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🔄</div>
+          <h3>Click & Collect</h3>
+          <p>Order online and collect from our store at a time that suits you. Skip the queue and pick up your order in minutes.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">📋</div>
+          <h3>Standing Orders</h3>
+          <p>Set up recurring orders for your regular essentials. We'll process automatically each week so you never run out.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💳</div>
+          <h3>Business Accounts</h3>
+          <p>Open a business account with dedicated account management, invoicing, and flexible payment terms up to 30 days.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section" style="background:var(--green-dark);color:white;text-align:center;">
+    <div class="container">
+      <h2 style="color:white;margin-bottom:1rem;">Ready to Open a Wholesale Account?</h2>
+      <p style="color:rgba(255,255,255,0.75);margin-bottom:2rem;">Register today and unlock exclusive wholesale pricing on all products</p>
+      <button class="btn btn-gold btn-lg" onclick="openModal('signupModal')">Register for Wholesale</button>
+    </div>
+  </section>
+  <footer style="background:var(--green-dark);padding:2rem;text-align:center;color:rgba(255,255,255,0.6);font-size:0.85rem;border-top:1px solid rgba(255,255,255,0.1);">
+    © 2025 Manideepika Groceries
+  </footer>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="aboutPage">
+  <div class="page-hero">
+    <h1>About Manideepika Groceries</h1>
+    <p>A family-run grocery business serving London since 2005 — growing from a single market stall to a thriving retail and wholesale store</p>
+  </div>
+  <section class="section">
+    <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
+      <div>
+        <span class="label text-green">Our Story</span>
+        <h2 style="margin-bottom:1rem;">From Market Stall to Grocery Hub</h2>
+        <p style="color:var(--gray-dark);line-height:1.8;margin-bottom:1rem;">Manideepika Groceries started in 2005 as a small family-run market stall in East London. Over two decades, we've grown into a full-service retail and wholesale grocery operation serving thousands of customers each week.</p>
+        <p style="color:var(--gray-dark);line-height:1.8;margin-bottom:1.5rem;">Our commitment remains the same: bring the freshest, highest-quality produce to every customer — whether you're a home cook buying for your family or a restaurant owner stocking your kitchen.</p>
+        <button class="btn btn-primary" onclick="navigate('contactPage')">Get in Touch</button>
+      </div>
+      <div style="background:var(--green-pale);border-radius:var(--radius);padding:2.5rem;text-align:center;">
+        <div style="font-size:5rem;margin-bottom:1rem;">🌿</div>
+        <h3 style="font-size:1.3rem;margin-bottom:0.5rem;">Our Mission</h3>
+        <p style="color:var(--gray-dark);line-height:1.7;">To make quality groceries accessible and affordable for everyone — from the individual shopper to the growing business — while supporting local suppliers and reducing food waste.</p>
+      </div>
+    </div>
+  </section>
+  <div class="stats-bar">
+    <div class="stat-item"><h3>20+</h3><p>Years in Business</p></div>
+    <div class="stat-item"><h3>10K+</h3><p>Happy Customers</p></div>
+    <div class="stat-item"><h3>50+</h3><p>Local Suppliers</p></div>
+    <div class="stat-item"><h3>500+</h3><p>Products Stocked</p></div>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="label">The Team</span>
+        <h2>Meet Our People</h2>
+        <p>A dedicated team passionate about food and great customer service</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">👨‍💼</div>
+          <h3>James Okafor</h3>
+          <p>Founder & CEO</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">👩‍💼</div>
+          <h3>Sarah Mitchell</h3>
+          <p>Head of Procurement</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">👨‍🍳</div>
+          <h3>Ahmed Hassan</h3>
+          <p>Wholesale Manager</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">👩‍💻</div>
+          <h3>Priya Sharma</h3>
+          <p>Operations Manager</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer style="background:var(--green-dark);padding:2rem;text-align:center;color:rgba(255,255,255,0.6);font-size:0.85rem;">
+    © 2025 Manideepika Groceries
+  </footer>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="page" id="contactPage">
+  <div class="page-hero">
+    <h1>Contact Us</h1>
+    <p>We'd love to hear from you. Get in touch for orders, enquiries, or wholesale applications</p>
+  </div>
+  <section class="section">
+    <div class="container contact-grid">
+      <div>
+        <h2 style="margin-bottom:1.5rem;">Get In Touch</h2>
+        <div class="contact-card">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h4 style="margin-bottom:0.25rem;">Store Address</h4>
+            <p style="font-size:0.88rem;color:var(--gray-dark);">371A Eastern Avenue, Ilford, London IG2 6NE</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h4 style="margin-bottom:0.25rem;">Phone</h4>
+            <p style="font-size:0.88rem;color:var(--gray-dark);">+44 7404188199 (Mon–Sat, 8am–8pm)</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <h4 style="margin-bottom:0.25rem;">Email</h4>
+            <p style="font-size:0.88rem;color:var(--gray-dark);">Deepika22400@gmail.com</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <h4 style="margin-bottom:0.25rem;">Opening Hours</h4>
+            <p style="font-size:0.88rem;color:var(--gray-dark);">Mon–Fri: 7am–9pm · Sat: 7am–8pm · Sun: 9am–6pm</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="checkout-section">
+          <h3>Send Us a Message</h3>
+          <form onsubmit="submitContact(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" placeholder="John" required />
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" placeholder="Smith" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="john@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Subject</label>
+              <select>
+                <option>General Enquiry</option>
+                <option>Wholesale Application</option>
+                <option>Order Issue</option>
+                <option>Product Feedback</option>
+                <option>Delivery Question</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <textarea placeholder="Tell us how we can help..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Send Message ✉️</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer style="background:var(--green-dark);padding:2rem;text-align:center;color:rgba(255,255,255,0.6);font-size:0.85rem;">
+    © 2025 Manideepika Groceries
+  </footer>
+</div>
+
+<!-- CHECKOUT PAGE -->
+<div class="page" id="checkoutPage">
+  <div class="page-hero" style="padding:2.5rem 2rem 2rem;">
+    <h1>Checkout</h1>
+    <p>Complete your order securely</p>
+  </div>
+  <section class="section" style="padding-top:2rem;">
+    <div class="container checkout-grid">
+      <div>
+        <!-- Delivery -->
+        <div class="checkout-section">
+          <h3>📍 Delivery Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="deliveryFirst" placeholder="John" />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="deliveryLast" placeholder="Smith" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Address Line 1</label>
+            <input type="text" id="deliveryAddr1" placeholder="123 Example Street" />
+          </div>
+          <div class="form-group">
+            <label>Address Line 2</label>
+            <input type="text" id="deliveryAddr2" placeholder="Flat 2B (optional)" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" id="deliveryCity" placeholder="London" />
+            </div>
+            <div class="form-group">
+              <label>Postcode</label>
+              <input type="text" id="deliveryPost" placeholder="E1 6RF" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="+44 7700 000000" />
+          </div>
+        </div>
+
+        <!-- Delivery Slot -->
+        <div class="checkout-section">
+          <h3>🚚 Delivery Options</h3>
+          <div class="payment-methods">
+            <label class="payment-option active">
+              <input type="radio" name="delivery" checked> Standard Delivery (1–2 days) — FREE over £30
+              <span style="margin-left:auto;font-weight:700;color:var(--green-mid);">£2.99</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="delivery"> Same-Day Delivery (order before 2pm)
+              <span style="margin-left:auto;font-weight:700;color:var(--green-mid);">£4.99</span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="delivery"> Click & Collect (free)
+              <span style="margin-left:auto;font-weight:700;color:var(--green-mid);">FREE</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="checkout-section">
+          <h3>💳 Payment Method</h3>
+          <div class="payment-methods">
+            <div class="payment-option active" data-method="card" onclick="selectPaymentMethod('card')">
+              <input type="radio" name="payment" checked>
+              <span>Credit / Debit Card</span>
+              <div class="payment-icons">
+                <span class="payment-icon-badge">VISA</span>
+                <span class="payment-icon-badge">MC</span>
+                <span class="payment-icon-badge">AMEX</span>
+              </div>
+            </div>
+            <div class="payment-option" data-method="stripe" onclick="selectPaymentMethod('stripe')">
+              <input type="radio" name="payment">
+              <span>🔷 Stripe Secure Pay</span>
+              <div class="payment-icons">
+                <span class="payment-icon-badge" style="background:#6772e5;color:white;">Stripe</span>
+              </div>
+            </div>
+            <div class="payment-option" data-method="paypal" onclick="selectPaymentMethod('paypal')">
+              <input type="radio" name="payment">
+              <span>🔵 PayPal</span>
+              <div class="payment-icons">
+                <span class="payment-icon-badge" style="background:#003087;color:white;">PayPal</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Fields -->
+          <div id="cardFields" style="margin-top:1rem;">
+            <div style="background:var(--green-pale);border:1px solid var(--green-light);border-radius:var(--radius-sm);padding:0.75rem 1rem;margin-bottom:1rem;font-size:0.82rem;color:var(--green-dark);">
+              🔒 Your payment is secured by 256-bit SSL encryption via Stripe
+            </div>
+            <div class="form-group">
+              <label>Cardholder Name</label>
+              <input type="text" id="cardName" placeholder="John Smith" />
+            </div>
+            <div class="form-group">
+              <label>Card Number</label>
+              <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19"
+                oninput="this.value=this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim()" />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Expiry Date</label>
+                <input type="text" id="cardExpiry" placeholder="MM / YY" maxlength="7"
+                  oninput="this.value=this.value.replace(/\D/g,'').replace(/^(\d{2})(\d)/,'$1 / $2')" />
+              </div>
+              <div class="form-group">
+                <label>CVV</label>
+                <input type="text" id="cardCVV" placeholder="123" maxlength="4"
+                  oninput="this.value=this.value.replace(/\D/g,'')" />
+              </div>
+            </div>
+          </div>
+
+          <!-- PayPal -->
+          <div id="paypalFields" style="display:none;margin-top:1rem;text-align:center;">
+            <div style="background:#f5f7fa;border:2px solid #003087;border-radius:var(--radius-sm);padding:2rem;">
+              <div style="font-size:2rem;margin-bottom:0.5rem;">🔵</div>
+              <p style="color:#003087;font-weight:600;">You will be redirected to PayPal to complete your payment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div>
+        <div class="order-summary">
+          <h3 style="font-size:1.1rem;margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid var(--gray-light);">🧾 Order Summary</h3>
+          <div class="cart-summary" id="checkoutItems"></div>
+          <div class="cart-summary" style="border-top:1px solid var(--gray-light);padding-top:0.75rem;margin-top:0.5rem;">
+            <div class="cart-summary-row"><span>Subtotal</span><span id="checkoutSubtotal">£0.00</span></div>
+            <div class="cart-summary-row"><span>Delivery</span><span id="checkoutDelivery">£2.99</span></div>
+            <div class="cart-summary-row total"><span>Total</span><span id="checkoutTotal">£0.00</span></div>
+          </div>
+          <div class="form-group mt-2">
+            <label>Promo Code</label>
+            <div style="display:flex;gap:0.5rem;">
+              <input type="text" placeholder="Enter code" style="margin:0;" />
+              <button class="btn btn-outline btn-sm" style="white-space:nowrap;">Apply</button>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block btn-lg mt-2" onclick="placeOrder()">
+            Place Order 🔒
+          </button>
+          <p style="font-size:0.75rem;color:var(--gray-dark);text-align:center;margin-top:0.75rem;">
+            By placing your order you agree to our Terms & Conditions
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ORDER CONFIRMATION PAGE -->
+<div class="page" id="confirmPage">
+  <section class="section" style="min-height:80vh;display:flex;align-items:center;justify-content:center;">
+    <div style="text-align:center;max-width:500px;">
+      <div style="font-size:5rem;margin-bottom:1rem;">🎉</div>
+      <h1 style="font-size:2rem;color:var(--green-dark);margin-bottom:0.75rem;">Order Confirmed!</h1>
+      <p style="color:var(--gray-dark);margin-bottom:1rem;">Thank you for shopping with Manideepika Groceries. Your order has been received and is being processed.</p>
+      <div style="background:var(--green-pale);border-radius:var(--radius);padding:1.5rem;margin-bottom:2rem;">
+        <div style="font-size:0.85rem;color:var(--gray-dark);">Order Number</div>
+        <div id="orderNumber" style="font-size:1.4rem;font-weight:700;color:var(--green-dark);font-family:'Playfair Display',serif;"></div>
+        <div style="font-size:0.82rem;color:var(--gray-dark);margin-top:0.5rem;">A confirmation has been sent to your email</div>
+      </div>
+      <div style="display:flex;gap:1rem;justify-content:center;">
+        <button class="btn btn-primary" onclick="navigate('productsPage')">Continue Shopping</button>
+        <button class="btn btn-outline" onclick="navigate('homePage')">Go to Home</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══ CART SIDEBAR ══ -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>🛒 Your Cart</h2>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="empty-state"><div class="icon">🛒</div><h3>Your cart is empty</h3><p>Add products to get started</p></div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-summary">
+      <div class="cart-summary-row"><span>Subtotal</span><span id="cartSubtotal">£0.00</span></div>
+      <div class="cart-summary-row"><span>Delivery</span><span id="cartDelivery">£2.99</span></div>
+      <div class="cart-summary-row total"><span>Total</span><span id="cartTotal">£0.00</span></div>
+    </div>
+    <p style="font-size:0.78rem;color:var(--green-bright);margin-bottom:0.75rem;font-weight:600;">🎉 Free delivery on orders over £30!</p>
+    <button class="btn btn-primary btn-block" onclick="closeCart();navigate('checkoutPage');renderOrderSummary();">
+      Proceed to Checkout →
+    </button>
+    <button class="btn btn-outline btn-block mt-1" onclick="closeCart()">Continue Shopping</button>
+  </div>
+</div>
+
+<!-- ══ MODALS ══ -->
+
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this)closeModal('loginModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Welcome Back 👋</h2>
+      <button class="cart-close" onclick="closeModal('loginModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:0.5rem;">Log In</button>
+      </form>
+      <p style="text-align:center;margin-top:1rem;font-size:0.88rem;color:var(--gray-dark);">
+        Don't have an account?
+        <a href="#" onclick="closeModal('loginModal');openModal('signupModal')" style="color:var(--green-mid);font-weight:600;">Sign Up</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Signup Modal -->
+<div class="modal-overlay" id="signupModal" onclick="if(event.target===this)closeModal('signupModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Create Account 🌿</h2>
+      <button class="cart-close" onclick="closeModal('signupModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="handleSignup(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="signupFirst" placeholder="John" required />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="signupLast" placeholder="Smith" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="signupEmail" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>Account Type</label>
+          <select id="signupType">
+            <option value="retail">Retail Customer</option>
+            <option value="wholesale">Wholesale Buyer</option>
+          </select>
+          <p class="form-hint">Wholesale buyers get exclusive bulk pricing</p>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="Min. 6 characters" required minlength="6" />
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="signupConfirm" placeholder="Repeat password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:0.5rem;">Create Account</button>
+      </form>
+      <p style="text-align:center;margin-top:1rem;font-size:0.88rem;color:var(--gray-dark);">
+        Already have an account?
+        <a href="#" onclick="closeModal('signupModal');openModal('loginModal')" style="color:var(--green-mid);font-weight:600;">Log In</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="../ap2/script/app.js"></script>
+<script>
+  function submitContact(e) {
+    e.preventDefault();
+    showToast('Message sent! We\'ll get back to you shortly 📧');
+    e.target.reset();
+  }
+</script>
+</body>
+</html>
